@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener,GestureDetector.OnGestureListener {
 
     public static final int SWIPE_THRESHOLD = 100;
@@ -21,6 +24,8 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private GestureDetector gestureDetector ;
     private LinearLayout linearLayout;
     private Button buttonVideo,buttonImage;
+    private FirebaseAnalytics firebaseAnalytics;
+    private TextView textLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +35,22 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         imageView=(ImageView)findViewById(R.id.imageView);
         gestureDetector=new GestureDetector(this,this);
         linearLayout=(LinearLayout)findViewById(R.id.linearLayout);
+        firebaseAnalytics= FirebaseAnalytics.getInstance(this);
 
         linearLayout.setOnTouchListener(this);
 
         buttonVideo=(Button)findViewById(R.id.buttonVideoDemo);
         buttonImage=(Button)findViewById(R.id.buttonImageDemo);
 
+
         buttonVideo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("ButtonID",buttonVideo.getId());
+                String btnName="buttonVideo";
+                firebaseAnalytics.logEvent(btnName,bundle);
+
                 Intent intent_info = new Intent(MainActivity.this,SecondActivity.class);
                 startActivity(intent_info);
                 overridePendingTransition(R.anim.slide_up,R.anim.no_change);
@@ -49,9 +61,24 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         buttonImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("ButtonID",buttonVideo.getId());
+                String btnName="buttonImage";
+                firebaseAnalytics.logEvent(btnName,bundle);
+
                 Intent intent_info = new Intent(MainActivity.this,ImageActivity.class);
                 startActivity(intent_info);
                 overridePendingTransition(R.anim.slide_up,R.anim.no_change);
+                finish();
+            }
+        });
+
+        ((TextView)findViewById(R.id.textLogout)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FirebaseAuth.getInstance().signOut();
+                Intent intent=new Intent(MainActivity.this,LoginActivity.class);
+                startActivity(intent);
                 finish();
             }
         });

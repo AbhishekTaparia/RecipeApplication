@@ -37,4 +37,12 @@
         android:text="@string/video_demo"
         android:background="@drawable/round_button"/>
 
+    <TextView
+        android:id="@+id/textLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/logout"
+        android:paddingTop="20dp"
+        android:textSize="18sp"/>
+
 </LinearLayout>
