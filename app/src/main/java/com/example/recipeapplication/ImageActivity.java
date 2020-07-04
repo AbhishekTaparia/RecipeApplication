@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 public class ImageActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
@@ -18,6 +20,7 @@ public class ImageActivity extends AppCompatActivity {
     private int dotsCount;
     private ImageView[] dots;
     private Button buttonClose;
+    private FirebaseAnalytics firebaseAnalytics;
 
 
     @Override
@@ -27,11 +30,16 @@ public class ImageActivity extends AppCompatActivity {
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         sliderDotspanel = (LinearLayout) findViewById(R.id.SliderDots);
+        firebaseAnalytics= FirebaseAnalytics.getInstance(this);
 
         buttonClose=(Button)findViewById(R.id.buttonClose2);
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("ButtonID",buttonClose.getId());
+                String btnName="buttonIClose";
+                firebaseAnalytics.logEvent(btnName,bundle);
                 Intent intent_info = new Intent(ImageActivity.this,MainActivity.class);
                 startActivity(intent_info);
                 finish();

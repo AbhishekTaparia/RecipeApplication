@@ -11,12 +11,14 @@ import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
 import com.google.android.youtube.player.YouTubePlayer;
 import com.google.android.youtube.player.YouTubePlayerView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 public class SecondActivity extends YouTubeBaseActivity {
 
     YouTubePlayerView youTubePlayerView;
     YouTubePlayer.OnInitializedListener onInitializedListener;
     private Button buttonClose;
+    private FirebaseAnalytics firebaseAnalytics;
 
 
 
@@ -36,12 +38,16 @@ public class SecondActivity extends YouTubeBaseActivity {
 
             }
         };
-
+        firebaseAnalytics= FirebaseAnalytics.getInstance(this);
         youTubePlayerView.initialize("<API CREDENTIALS>",onInitializedListener);
         buttonClose=(Button)findViewById(R.id.buttonClose);
         buttonClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Bundle bundle = new Bundle();
+                bundle.putInt("ButtonID",buttonClose.getId());
+                String btnName="buttonVClose";
+                firebaseAnalytics.logEvent(btnName,bundle);
                 Intent intent_info = new Intent(SecondActivity.this,MainActivity.class);
                 startActivity(intent_info);
                 finish();
