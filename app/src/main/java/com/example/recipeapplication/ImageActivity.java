@@ -38,7 +38,7 @@ public class ImageActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("ButtonID",buttonClose.getId());
-                String btnName="buttonIClose";
+                String btnName="image_engagment_close";
                 firebaseAnalytics.logEvent(btnName,bundle);
                 Intent intent_info = new Intent(ImageActivity.this,MainActivity.class);
                 startActivity(intent_info);

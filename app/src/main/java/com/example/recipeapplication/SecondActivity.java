@@ -17,6 +17,7 @@ public class SecondActivity extends YouTubeBaseActivity {
 
     YouTubePlayerView youTubePlayerView;
     YouTubePlayer.OnInitializedListener onInitializedListener;
+    YouTubePlayer.PlayerStateChangeListener onPlayerStateChangeListener;
     private Button buttonClose;
     private FirebaseAnalytics firebaseAnalytics;
 
@@ -27,10 +28,47 @@ public class SecondActivity extends YouTubeBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_second);
         youTubePlayerView=(YouTubePlayerView)findViewById(R.id.youtubePlayerView);
+
+        onPlayerStateChangeListener=new YouTubePlayer.PlayerStateChangeListener() {
+            @Override
+            public void onLoading() {
+
+            }
+
+            @Override
+            public void onLoaded(String s) {
+
+            }
+
+            @Override
+            public void onAdStarted() {
+
+            }
+
+            @Override
+            public void onVideoStarted() {
+
+            }
+
+            @Override
+            public void onVideoEnded() {
+                Bundle bundle = new Bundle();
+                firebaseAnalytics.setUserProperty("saw_complete_video","true");
+                String btnName="video_ended";
+                firebaseAnalytics.logEvent(btnName,bundle);
+            }
+
+            @Override
+            public void onError(YouTubePlayer.ErrorReason errorReason) {
+
+            }
+        };
+
         onInitializedListener= new YouTubePlayer.OnInitializedListener() {
             @Override
             public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer youTubePlayer, boolean b) {
                 youTubePlayer.loadVideo("5MgBikgcWnY");
+                youTubePlayer.setPlayerStateChangeListener(onPlayerStateChangeListener);
             }
 
             @Override
@@ -46,7 +84,7 @@ public class SecondActivity extends YouTubeBaseActivity {
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("ButtonID",buttonClose.getId());
-                String btnName="buttonVClose";
+                String btnName="video_engagment_close";
                 firebaseAnalytics.logEvent(btnName,bundle);
                 Intent intent_info = new Intent(SecondActivity.this,MainActivity.class);
                 startActivity(intent_info);

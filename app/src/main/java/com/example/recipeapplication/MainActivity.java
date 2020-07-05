@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("ButtonID",buttonVideo.getId());
-                String btnName="buttonVideo";
+                String btnName="video_engagment_shown";
                 firebaseAnalytics.logEvent(btnName,bundle);
 
                 Intent intent_info = new Intent(MainActivity.this,SecondActivity.class);
@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             public void onClick(View view) {
                 Bundle bundle = new Bundle();
                 bundle.putInt("ButtonID",buttonVideo.getId());
-                String btnName="buttonImage";
+                String btnName="image_engagment_shown";
                 firebaseAnalytics.logEvent(btnName,bundle);
 
                 Intent intent_info = new Intent(MainActivity.this,ImageActivity.class);
