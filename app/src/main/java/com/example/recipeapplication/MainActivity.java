@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
     private LinearLayout linearLayout;
     private Button buttonVideo,buttonImage;
     private FirebaseAnalytics firebaseAnalytics;
-    private TextView textLogout;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
         imageView=(ImageView)findViewById(R.id.imageView);
         gestureDetector=new GestureDetector(this,this);
         linearLayout=(LinearLayout)findViewById(R.id.linearLayout);
+        mAuth = FirebaseAuth.getInstance();
         firebaseAnalytics= FirebaseAnalytics.getInstance(this);
+
+        firebaseAnalytics.setUserId(mAuth.getCurrentUser().getUid());
 
         linearLayout.setOnTouchListener(this);
 
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 Bundle bundle = new Bundle();
                 bundle.putInt("ButtonID",buttonVideo.getId());
                 String btnName="video_engagment_shown";
+                firebaseAnalytics.setUserProperty("opened_video","true");
                 firebaseAnalytics.logEvent(btnName,bundle);
 
                 Intent intent_info = new Intent(MainActivity.this,SecondActivity.class);
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 Bundle bundle = new Bundle();
                 bundle.putInt("ButtonID",buttonVideo.getId());
                 String btnName="image_engagment_shown";
+                firebaseAnalytics.setUserProperty("opened_image","true");
                 firebaseAnalytics.logEvent(btnName,bundle);
 
                 Intent intent_info = new Intent(MainActivity.this,ImageActivity.class);
