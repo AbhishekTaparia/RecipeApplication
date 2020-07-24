@@ -1,5 +1,6 @@
 package com.example.recipeapplication;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -12,9 +13,14 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 public class MainActivity extends AppCompatActivity implements View.OnTouchListener,GestureDetector.OnGestureListener {
 
@@ -54,6 +60,10 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
                 String btnName="video_engagment_shown";
                 firebaseAnalytics.setUserProperty("opened_video","true");
                 firebaseAnalytics.logEvent(btnName,bundle);
+//                FirebaseFunctions mFunctions;
+//                mFunctions = FirebaseFunctions.getInstance();
+//                mFunctions.getHttpsCallable("ewfe").call();
+
 
                 Intent intent_info = new Intent(MainActivity.this,SecondActivity.class);
                 startActivity(intent_info);
@@ -88,6 +98,24 @@ public class MainActivity extends AppCompatActivity implements View.OnTouchListe
             }
         });
 
+        FirebaseInstanceId.getInstance().getInstanceId()
+                .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "getInstanceId failed", task.getException());
+                            return;
+                        }
+
+                        // Get new Instance ID token
+                        String token = task.getResult().getToken();
+
+                        // Log and toast
+//                        String msg = getString(R.string.msg_token_fmt, token);
+                        Log.d(TAG, token);
+                        Toast.makeText(MainActivity.this, token, Toast.LENGTH_SHORT).show();
+                    }
+                });
 
     }
 
